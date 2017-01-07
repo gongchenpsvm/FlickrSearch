@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -76,10 +77,26 @@ class GetFlickrjsonData implements GetRawData.OnDownloadComplete {
                     JSONObject jsonMedia = jsonPhoto.getJSONObject("media");
                     String photoUrl = jsonMedia.getString("m");
 
-                    String link = photoUrl.replaceFirst("_m.", "_b.");
+                    String link = photoUrl.replaceFirst("_m.", "_b.");//Big photo's url
+
+                    Photo photoObject = new Photo(title, author, authorId, link, tags, photoUrl);
+                    mPhotoList.add(photoObject);
+
+                    Log.d(TAG, "onDownloadComplete " + photoObject.toString());
                 }
+            } catch (JSONException jsone){
+                jsone.printStackTrace();
+                Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
+                status = DownloadStatus.FAILED_OR_EMPTY;
             }
         }
+
+        if (mCallBack != null){
+            //Now inform the caller that processing is done
+            mCallBack.onDataAvailable(mPhotoList, status);//If mPhotoList null, caller decides
+        }
+
+        Log.d(TAG, "onDownloadComplete ends");
 
     }
 }
