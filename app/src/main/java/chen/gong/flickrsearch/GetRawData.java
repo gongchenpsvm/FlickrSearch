@@ -1,8 +1,6 @@
 package chen.gong.flickrsearch;
-
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,7 +29,7 @@ class GetRawData extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         //super.onPostExecute(s); //From Source, this function does nothing.
-        Log.d(TAG, "onPostExecute: parameter = " + s);
+        //Log.d(TAG, "onPostExecute: parameter = " + s);
         if (mCallback != null){
             mCallback.onDownloadComplete(s, mDownloadStatus);
         }
@@ -88,5 +86,14 @@ class GetRawData extends AsyncTask<String, Void, String> {
         }
         mDownloadStatus = DownloadStatus.FAILED_OR_EMPTY;
         return null;
+    }
+
+    void runInSameThread(String s) {
+        Log.d(TAG, "runInSameThread starts");
+//        onPostExecute(doInBackground(s));
+        if (mCallback != null){
+            mCallback.onDownloadComplete(doInBackground(s), mDownloadStatus);
+        }
+        Log.d(TAG, "runInSameThread ends");
     }
 }
