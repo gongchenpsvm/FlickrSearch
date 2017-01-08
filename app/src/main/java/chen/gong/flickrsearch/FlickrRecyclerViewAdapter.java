@@ -3,6 +3,7 @@ package chen.gong.flickrsearch;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,7 +28,9 @@ class FlickrRecyclerViewAdapter
 
     @Override
     public FlickrImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        Log.d(TAG, "onCreateViewHolder: new view requested");
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.browse,parent,false);
+        return new FlickrImageViewHolder(view);
     }
 
     @Override
@@ -37,7 +40,25 @@ class FlickrRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        return 0;
+        Log.d(TAG, "getItemCount: called");
+        if (mPhotoList == null){
+            return 0;
+        } else {
+            return mPhotoList.size();
+        }
+    }
+
+    void loadNewData(List<Photo> newPhotos){
+        mPhotoList = newPhotos;
+        notifyDataSetChanged();//Tell registered observers that data's changed
+    }
+    public Photo getPhoto(int position){
+        if (mPhotoList == null || mPhotoList.size() == 0){
+            return null;
+        }
+        else {
+            return mPhotoList.get(position);
+        }
     }
 
     static class FlickrImageViewHolder extends RecyclerView.ViewHolder {
