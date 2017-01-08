@@ -23,7 +23,7 @@ class FlickrRecyclerViewAdapter
     private List<Photo> mPhotoList;
     private Context mContext;
 
-    public FlickrRecyclerViewAdapter(List<Photo> photoList, Context context) {
+    public FlickrRecyclerViewAdapter( Context context, List<Photo> photoList) {
         mPhotoList = photoList;
         mContext = context;
     }
@@ -40,7 +40,7 @@ class FlickrRecyclerViewAdapter
         Photo photoItem = mPhotoList.get(position);
         Log.d(TAG, "onBindViewHolder: " + photoItem.getTitle() + " --> " + position);
         Picasso.with(mContext).load(photoItem.getImage())
-                .error(R.drawable.brokenImage)
+                .error(R.drawable.broken_image)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.thumbnail);
         holder.title.setText(photoItem.getTitle());
@@ -58,6 +58,7 @@ class FlickrRecyclerViewAdapter
 
     void loadNewData(List<Photo> newPhotos){
         mPhotoList = newPhotos;
+
         notifyDataSetChanged();//Tell registered observers that data's changed
     }
     public Photo getPhoto(int position){

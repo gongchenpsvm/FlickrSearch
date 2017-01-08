@@ -2,15 +2,19 @@ package chen.gong.flickrsearch;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GetFlickrjsonData.OnDataAvailable{
     private static final String TAG = "MainActivity";
+    private FlickrRecyclerViewAdapter mFlickrRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,11 @@ public class MainActivity extends AppCompatActivity implements GetFlickrjsonData
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mFlickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(this, new ArrayList<Photo>());
+        recyclerView.setAdapter(mFlickrRecyclerViewAdapter);
         //api.flickr.com/ser vices/feeds/photos_public.gne?tags=android,sdk&tagmode=any&format=json&nojsoncallback=1
 //        GetRawData getRawData = new GetRawData(this);
 //        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne" +
@@ -64,10 +73,12 @@ public class MainActivity extends AppCompatActivity implements GetFlickrjsonData
 
     @Override
     public void onDataAvailable (List<Photo> data, DownloadStatus status) {
+        Log.d(TAG, "onDataAvailable: starts");
         if (status == DownloadStatus.OK){
-            Log.d(TAG, "onDownloadComplete: data is " + data);
-        } else {
-            Log.e(TAG, "onDownloadComplete: fail with status" + status);
+            mFlickrRecyclerViewAdapter.loadNewData(data);
+        } else {//Downloading or processing fails
+            Log.e(TAG, "onDataAvailable failde with status " + status);
         }
+        Log.d(TAG, "onDataAvailable: ends");
     }
 }
