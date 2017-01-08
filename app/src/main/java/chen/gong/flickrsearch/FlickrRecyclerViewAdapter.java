@@ -48,7 +48,7 @@ class FlickrRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: called");
+        //Log.d(TAG, "getItemCount: called");
         if (mPhotoList == null){
             return 0;
         } else {
