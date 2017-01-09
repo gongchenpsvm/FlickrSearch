@@ -1,10 +1,12 @@
 package chen.gong.flickrsearch;
 
+import java.io.Serializable;
+
 /**
  * Created by gongchen on 1/6/17.
  */
 
-class Photo  {
+class Photo implements Serializable{
     private String mTitle;
     private String mAuthor;
     private String mAuthorId;
