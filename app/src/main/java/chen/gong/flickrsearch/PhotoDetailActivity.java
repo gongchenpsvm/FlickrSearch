@@ -9,7 +9,7 @@ public class PhotoDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_detail);
 
-
+        activateToolbar(true);
     }
 
 }
