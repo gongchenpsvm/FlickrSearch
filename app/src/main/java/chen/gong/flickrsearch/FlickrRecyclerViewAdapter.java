@@ -60,6 +60,7 @@ class FlickrRecyclerViewAdapter
         mPhotoList = newPhotos;
 
         notifyDataSetChanged();//Tell registered observers that data's changed
+
     }
     public Photo getPhoto(int position){
         if (mPhotoList == null || mPhotoList.size() == 0){
